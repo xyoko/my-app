@@ -10,5 +10,93 @@
   body {
     margin: 0;
     font-family: Inter, system-ui, sans-serif;
+    background: #0b0d0f;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 2px solid #f3c66b;
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .app-shell {
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(243, 198, 107, 0.07), transparent 28%),
+      linear-gradient(135deg, #101216 0%, #090b0d 100%);
+  }
+
+  .engraved-text {
+    text-shadow:
+      0 1px 0 #ffffff20,
+      0 2px 1px #00000080,
+      0 -1px 0 #00000080;
+  }
+
+  .nav-link {
+    color: #a8a29b;
+    border: 1px solid transparent;
+  }
+
+  .nav-link:hover {
+    color: #f5f5f4;
+    border-color: rgb(255 255 255 / 0.1);
+    background: rgb(255 255 255 / 0.04);
+  }
+
+  .nav-link-active {
+    color: #171717;
+    border-color: #d9b15a;
+    background: linear-gradient(135deg, #f6d98b, #b98a31);
+    box-shadow: 0 5px 18px rgb(185 138 49 / 0.2);
+  }
+
+  .metallic-card {
+    background-image:
+      linear-gradient(135deg, rgb(255 255 255 / 0.055), transparent 40%),
+      linear-gradient(145deg, #1b1e21, #111316);
+  }
+
+  .metallic-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), inset 0 -1px 0 rgb(0 0 0 / 0.7);
+  }
+
+  .card-glint {
+    position: absolute;
+    top: -60%;
+    left: -40%;
+    width: 45%;
+    height: 220%;
+    transform: rotate(28deg);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.12), transparent);
+    transition: transform 700ms ease;
+  }
+
+  .metallic-card:hover .card-glint {
+    transform: translateX(320%) rotate(28deg);
+  }
+
+  .metallic-button {
+    background: linear-gradient(135deg, #f6d98b 0%, #c49a42 48%, #8c6823 100%);
+    border: 1px solid #f6d98b;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.55), 0 6px 18px rgb(0 0 0 / 0.28);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }

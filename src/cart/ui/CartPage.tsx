@@ -22,23 +22,28 @@ export function CartPage() {
         return (
           <div
             key={cartItem.id}
-            className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-black bg-white p-4 shadow-sm"
+            className="metallic-card group relative flex flex-wrap items-center justify-between gap-4 overflow-hidden rounded-xl border border-stone-500/70 bg-[#171a1d] p-4 shadow-[0_12px_30px_rgba(0,0,0,0.3)] transition duration-500 hover:border-amber-300/50"
           >
-            <div>
-              <h2 className="font-semibold text-slate-900">{product.name}</h2>
-              <p className="mt-1 text-sm text-slate-600">
-                ${product.price} each
+            <div className="card-glint" aria-hidden="true" />
+            <div className="relative">
+              <h2 className="engraved-text font-semibold text-stone-100">
+                {product.name}
+              </h2>
+              <p className="mt-1 text-sm text-stone-500">
+                ${product.price.toFixed(2)} each
               </p>
             </div>
-            <QuantityControl product={product} quantity={cartItem.quantity} />
-            <p className="min-w-20 text-right font-medium tabular-nums">
-              ${(product.price * cartItem.quantity)}
-            </p>
+            <div className="relative flex items-center gap-4">
+              <QuantityControl product={product} quantity={cartItem.quantity} />
+              <p className="min-w-20 text-right font-medium tabular-nums text-amber-200">
+                ${(product.price * cartItem.quantity).toFixed(2)}
+              </p>
+            </div>
           </div>
         );
       })}
-      <div className="flex justify-end border-t border-black pt-4">
-        <p className="font-semibold text-slate-900">
+      <div className="flex justify-end border-t border-white/10 pt-4">
+        <p className="engraved-text font-semibold text-stone-100">
           Total: ${total.toFixed(2)}
         </p>
       </div>

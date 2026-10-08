@@ -36,6 +36,9 @@ const cartSlice = createSlice({
         if (delta > 0) state.items.push({ ...product, quantity: delta });
       }
     },
+    clearCart: (state) => {
+      state.items = [];
+    },
   },
 });
 
