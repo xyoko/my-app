@@ -1,8 +1,10 @@
-import { useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { items } from "../../entity/items";
 import { QuantityControl } from "./QuantityControl";
+import { clearCart } from "../../card/model/cartSlice";
 
 export function CartPage() {
+  const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -46,6 +48,11 @@ export function CartPage() {
         <p className="engraved-text font-semibold text-stone-100">
           Total: ${total.toFixed(2)}
         </p>
+      </div>
+      <div className="flex justify-center">
+        <button onClick={() => {dispatch(clearCart())}} className="rounded-lg border border-amber-300/50 bg-amber-300/10 py-2 px-4 text-amber-200 transition hover:border-amber-300/50 hover:bg-amber-300/20">
+          Checkout
+        </button>
       </div>
     </section>
   );
