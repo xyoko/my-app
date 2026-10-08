@@ -51,7 +51,7 @@ export function CartPage() {
       </div>
       <div className="flex justify-center">
         <button onClick={() => {dispatch(clearCart())
-          window.alert("Thank you for your purchase! Your order has been placed successfully.");
+          window.alert("END");
         }} className="rounded-lg border border-amber-300/50 bg-amber-300/10 py-2 px-4 text-amber-200 transition hover:border-amber-300/50 hover:bg-amber-300/20">
           Checkout
         </button>
