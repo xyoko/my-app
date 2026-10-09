@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { NavLink, Route, Routes } from "react-router-dom";
 import { Card } from "./card/ui/card";
 import { items } from "./entity/items";
 import { useAppSelector } from "./hooks";
@@ -7,9 +7,6 @@ import { CartPage } from "./cart/ui/CartPage";
 import { WishlistPage } from "./wishlist/ui/WishlistPage";
 
 export default function App() {
-	const [page, setPage] = useState<"products" | "cart" | "wishlist">(
-		"products",
-	);
 	const cartCount = useAppSelector((state) =>
 		state.cart.items.reduce((sum, item) => sum + item.quantity, 0),
 	);
@@ -26,43 +23,56 @@ export default function App() {
 					</h1>
 				</div>
 				<nav className="flex gap-2" aria-label="Main navigation">
-					<button
-						type="button"
-						aria-current={page === "products" ? "page" : undefined}
-						onClick={() => setPage("products")}
-						className={`nav-link rounded px-3 py-2 text-sm font-medium transition ${page === "products" ? "nav-link-active" : ""}`}
+					<NavLink
+						to="/"
+						className={({ isActive }) =>
+							`nav-link rounded px-3 py-2 text-sm font-medium transition ${
+								isActive ? "nav-link-active" : ""
+							}`
+						}
 					>
 						Products
-					</button>
-					<button
-						type="button"
-						aria-current={page === "cart" ? "page" : undefined}
-						onClick={() => setPage("cart")}
-						className={`nav-link rounded px-3 py-2 text-sm font-medium transition ${page === "cart" ? "nav-link-active" : ""}`}
+					</NavLink>
+					<NavLink
+						to="/cart"
+						className={({ isActive }) =>
+							`nav-link rounded px-3 py-2 text-sm font-medium transition ${
+								isActive ? "nav-link-active" : ""
+							}`
+						}
 					>
 						Cart ({cartCount})
-					</button>
-					<button
-						type="button"
-						aria-current={page === "wishlist" ? "page" : undefined}
-						onClick={() => setPage("wishlist")}
-						className={`nav-link rounded px-3 py-2 text-sm font-medium transition ${page === "wishlist" ? "nav-link-active" : ""}`}
+					</NavLink>
+					<NavLink
+						to="/wishlist"
+						className={({ isActive }) =>
+							`nav-link rounded px-3 py-2 text-sm font-medium transition ${
+								isActive ? "nav-link-active" : ""
+							}`
+						}
 					>
 						Wishlist
-					</button>
+					</NavLink>
 				</nav>
 			</header>
-			{page === "products" ? (
-				<section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-label="Products">
-					{items.map((product) => (
-						<Card key={product.id} product={product} />
-					))}
-				</section>
-			) : page === "wishlist" ? (
-				<WishlistPage />
-			) : (
-				<CartPage />
-			)}
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<section
+							className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+							aria-label="Products"
+						>
+							{items.map((product) => (
+								<Card key={product.id} product={product} />
+							))}
+						</section>
+					}
+				/>
+				<Route path="/cart" element={<CartPage />} />
+				<Route path="/wishlist" element={<WishlistPage />} />
+				<Route path="*" element={<CartPage />} />
+			</Routes>
 		</main>
 	);
 }
