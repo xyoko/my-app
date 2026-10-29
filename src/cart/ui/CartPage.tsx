@@ -1,5 +1,4 @@
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { items } from "../../entity/items";
 import { QuantityControl } from "./QuantityControl";
 import { clearCart } from "../../card/model/cartSlice";
 
@@ -18,8 +17,7 @@ export function CartPage() {
   return (
     <section className="space-y-4" aria-label="Shopping cart">
       {cartItems.map((cartItem) => {
-        const product = items.find((item) => item.id === cartItem.id);
-        if (!product) return null;
+        const product = cartItem;
 
         return (
           <div
@@ -34,6 +32,11 @@ export function CartPage() {
               <p className="mt-1 text-sm text-stone-500">
                 ${product.price.toFixed(2)} each
               </p>
+              {product.description && (
+                <p className="mt-2 max-w-xl text-sm text-stone-400">
+                  {product.description}
+                </p>
+              )}
             </div>
             <div className="relative flex items-center gap-4">
               <QuantityControl product={product} quantity={cartItem.quantity} />

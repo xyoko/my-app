@@ -31,6 +31,11 @@ export function WishlistPage() {
                 <h3 className="engraved-text text-lg font-semibold text-stone-100">
                   {product.name}
                 </h3>
+                {product.description && (
+                  <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-stone-400">
+                    {product.description}
+                  </p>
+                )}
                 <p className="mt-2 text-sm font-medium text-amber-300/80">
                   ${product.price.toFixed(2)}
                 </p>
