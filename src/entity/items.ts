@@ -63,7 +63,7 @@ const MockProducts: Product[] = [
 let localProducts: Product[] = MockProducts.map((product) => ({ ...product }));
 
 const api = axios.create({
-  baseURL: "https://jsonplaceholder.typicode.com",
+  baseURL: "https://jsonplaceholder.typicode.co",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
