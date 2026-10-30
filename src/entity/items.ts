@@ -39,7 +39,7 @@ const api = axios.create({
 });
 
 export const itemsApi = {
-  // GET /api/news -> read news; the API wraps its array in a `data` property.
+  
   async getAll(): Promise<News[]> {
     try {
       const { data } = await api.get<NewsListResponse>("/api/news", {
@@ -51,14 +51,13 @@ export const itemsApi = {
     }
   },
 
-  // GET /api/news/:id -> read one news item.
+  //меняю че надо тут я не полностью понимаю что тут оно должно по айди получать и все и все что я знаю
   async getById(id: string): Promise<News> {
     const { data } = await api.get<News>(`/api/news/${id}`);
     return data;
   },
 
-  // POST /api/news -> create news using title and summary from the form.
-  // The other required/optional fields come from the sample defaults above.
+  
   async create(input: NewNews): Promise<News> {
     const payload: NewsCreatePayload = {
       ...defaultSamples,
@@ -74,7 +73,7 @@ export const itemsApi = {
     }
   },
 
-  // PUT /api/news/:id -> replace a news item. The API requires title and content.
+
   async replace(id: string | number, changes: Partial<News>): Promise<News> {
     const updated: News = {
       id,
@@ -99,7 +98,7 @@ export const itemsApi = {
     }
   },
 
-  // PATCH /api/news/:id -> update only supplied fields.
+//тут ии тоже помогал Partial что такое научил и теперь только так могу использовать пока что
   async patch(id: string | number, changes: Partial<News>): Promise<News> {
     try {
       const payload: Partial<NewsCreatePayload> = {};
@@ -116,12 +115,12 @@ export const itemsApi = {
     }
   },
 
-  // DELETE /api/news/:id -> remove a news item.
+  
   async remove(id: string | number): Promise<void> {
     try {
       await api.delete(`/api/news/${id}`);
-    } catch {
-      // Remote failure is ignored for the simple demo API.
+    } catch (error) {
+      window.alert('huy')
     }
   },
 };
