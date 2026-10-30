@@ -1,11 +1,9 @@
 
 import { NavLink, Outlet } from "react-router-dom";
-import { useAppSelector } from "./hooks";
+
 
 export default function App() {
-	const cartCount = useAppSelector((state) =>
-		state.cart.items.reduce((sum, item) => sum + item.quantity, 0),
-	);
+
 
 	return (
     
@@ -29,27 +27,7 @@ export default function App() {
 							}`
 						}
 					>
-						Products
-					</NavLink>
-					<NavLink
-						to="/cart"
-						className={({ isActive }) =>
-							`nav-link rounded px-3 py-2 text-sm font-medium transition ${
-								isActive ? "nav-link-active" : ""
-							}`
-						}
-					>
-						Cart ({cartCount})
-					</NavLink>
-					<NavLink
-						to="/wishlist"
-						className={({ isActive }) =>
-							`nav-link rounded px-3 py-2 text-sm font-medium transition ${
-								isActive ? "nav-link-active" : ""
-							}`
-						}
-					>
-						Wishlist
+							News
 					</NavLink>
 					<NavLink
 						to="/edit"
@@ -59,7 +37,7 @@ export default function App() {
 							}`
 						}
 					>
-						Edit Product
+							New story
 					</NavLink>
 				</nav>
 			</header>

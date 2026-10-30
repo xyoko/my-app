@@ -1,63 +1,51 @@
 import { useEffect, useState } from "react";
 import { Card } from "../../card/ui/card";
-import { itemsApi, type Product } from "../../entity/items";
-import { useNavigate } from "react-router-dom";
+import { itemsApi, type News } from "../../entity/items";
 
 export function CatalogPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [newsItems, setNewsItems] = useState<News[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
 
-  async function loadProducts() {
+  async function loadNews() {
     const result = await itemsApi.getAll();
-    setProducts(result);
+    setNewsItems(result);
     setIsLoading(false);
   }
 
   useEffect(() => {
-    void loadProducts();
+    void loadNews();
   }, []);
 
   async function handleCreateSample() {
-    const sample: Product = {
-      id: "",
-      name: `Demo Product ${Date.now()}`,
-      price: 49.99,
-      description: "Created with POST",
-    };
-
-    await itemsApi.create(sample);
-    await loadProducts();
-  }
-
-  async function handlePatch(product: Product) {
-    await itemsApi.patch(product.id, {
-      price: Number((product.price + 10).toFixed(2)),
-      description: "Updated with PATCH",
+    await itemsApi.create({
+      title: `Demo News ${Date.now()}`,
+      summary: `Summary ${Date.now()}`,
     });
-    await loadProducts();
+    await loadNews();
   }
-  async function handleDelete(id: string) {
+
+  async function handlePatch(news: News) {
+    await itemsApi.patch(String(news.id), {
+      summary: "Updated with PATCH",
+    });
+    await loadNews();
+  }
+
+  async function handleDelete(id: string | number) {
     setIsLoading(true);
     await itemsApi.remove(id);
-    await loadProducts();
+    await loadNews();
   }
-  async function handleReplace(product: Product) {
-    handleDelete(product.id);
-    navigate("edit");
-  }
-
-  
 
   return (
-    <section className="space-y-5" aria-label="Products">
+    <section className="space-y-5" aria-label="News">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.32em] text-amber-300/70">
-            Product catalog
+            News catalog
           </p>
           <h2 className="engraved-text mt-1 text-2xl font-semibold text-stone-100">
-            Products
+            Latest stories
           </h2>
         </div>
       </div>
@@ -65,52 +53,67 @@ export function CatalogPage() {
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
-          onClick={() => void handleCreateSample()}
+          onClick={() => {
+            setIsLoading(true);
+            void loadNews();
+          }}
           className="rounded bg-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-950"
         >
-          Add product
+          Load stories
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setIsLoading(true);
+            void handleCreateSample();
+          }}
+          className="rounded bg-emerald-300 px-3 py-2 text-sm font-semibold text-emerald-950"
+        >
+          Add sample story
         </button>
       </div>
 
+
       {isLoading && (
         <p className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-stone-300" role="status">
-          Loading products…
+          Loading stories…
         </p>
       )}
 
-      {!isLoading && products.length === 0 && (
-        <p className="text-sm text-stone-400">No products were returned.</p>
+      {!isLoading && newsItems.length === 0 && (
+        <p className="text-sm text-stone-400">No news items were returned.</p>
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <div key={product.id} className="space-y-3">
-            <Card product={product} />
-            <div className="flex gap-2">
-              <button
+        {(!isLoading && newsItems.length > 0) && (
+          newsItems.map((item) => (
+            <div key={String(item.id)} className="space-y-3">
+              <Card item={item} />
+              <div className="flex gap-2">
+                <button
                 type="button"
-                onClick={() => void handlePatch(product)}
+                onClick={() => {
+                  setIsLoading(true);
+                  void handlePatch(item);
+                }}
                 className="rounded border border-amber-300/40 bg-amber-300/10 px-2 py-1 text-xs text-amber-200"
               >
                 PATCH
               </button>
               <button
                 type="button"
-                onClick={() => void handleDelete(product.id)}
+                onClick={() => {
+                  setIsLoading(true);
+                  void handleDelete(item.id);
+                }}
                 className="rounded border border-rose-300/40 bg-rose-300/10 px-2 py-1 text-xs text-rose-200"
               >
                 DELETE
               </button>
-               <button
-                type="button"
-                onClick={() => void handleReplace(product)}
-                className="rounded border border-amber-300/40 bg-amber-300/10 px-2 py-1 text-xs text-amber-200"
-              >
-                REPLACE
-              </button>
             </div>
           </div>
-        ))}
+          ))
+        )}
       </div>
     </section>
   );
