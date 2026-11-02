@@ -9,7 +9,7 @@ export type News = {
   author?: string;
 };
 
-export type NewNews = Pick<News, "title" | "summary">;
+export type NewNews = Pick<News, "title" | "summary" | "image_url">;
 
 type NewsListResponse = {
   data: News[];
@@ -39,7 +39,6 @@ const api = axios.create({
 });
 
 export const itemsApi = {
-  
   async getAll(): Promise<News[]> {
     try {
       const { data } = await api.get<NewsListResponse>("/api/news", {
@@ -57,12 +56,12 @@ export const itemsApi = {
     return data;
   },
 
-  
   async create(input: NewNews): Promise<News> {
     const payload: NewsCreatePayload = {
       ...defaultSamples,
       title: input.title,
       summary: input.summary ?? "No summary provided.",
+      image_url: input.image_url ?? defaultSamples.image_url,
     };
     try {
       const { data } = await api.post<News>("/api/news", payload);
@@ -72,7 +71,6 @@ export const itemsApi = {
       throw error;
     }
   },
-
 
   async replace(id: string | number, changes: Partial<News>): Promise<News> {
     const updated: News = {
@@ -98,7 +96,7 @@ export const itemsApi = {
     }
   },
 
-//тут ии тоже помогал Partial что такое научил и теперь только так могу использовать пока что
+  //тут ии тоже помогал Partial что такое научил и теперь только так могу использовать пока что
   async patch(id: string | number, changes: Partial<News>): Promise<News> {
     try {
       const payload: Partial<NewsCreatePayload> = {};
@@ -115,12 +113,11 @@ export const itemsApi = {
     }
   },
 
-  
   async remove(id: string | number): Promise<void> {
     try {
       await api.delete(`/api/news/${id}`);
     } catch (error) {
-      window.alert('huy')
+      window.alert("huy");
     }
   },
 };
