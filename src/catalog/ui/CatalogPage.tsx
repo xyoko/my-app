@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "../../card/ui/card";
 import { itemsApi, type News } from "../../entity/items";
 
 export function CatalogPage() {
   const [newsItems, setNewsItems] = useState<News[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   async function loadNews() {
     const result = await itemsApi.getAll();
@@ -25,10 +27,7 @@ export function CatalogPage() {
   }
 
   async function handlePatch(news: News) {
-    await itemsApi.patch(String(news.id), {
-      summary: "Updated with PATCH",
-    });
-    await loadNews();
+    navigate("/patch", { state: { item: news } });
   }
 
   async function handleDelete(id: string | number) {

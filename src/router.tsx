@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import { CatalogPage } from "./catalog/ui/CatalogPage";
-import { EditModel } from "./edit/model/model";
+import { AddModel } from "./edit/model/model";
+// import { ButtonGuard } from "./button_guard";
+import { EditModell } from "./patch/patchPage";
 
 export const router = createBrowserRouter(
   [
@@ -10,7 +12,8 @@ export const router = createBrowserRouter(
       element: <App />,
       children: [
         { index: true, element: <CatalogPage /> },
-        { path: "edit", element: <EditModel /> },
+        { path: "post", element: <AddModel /> },
+        { path: "patch", element: <EditModell /> },
         { path: "*", element: <CatalogPage /> },
       ],
     },

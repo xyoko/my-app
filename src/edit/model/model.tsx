@@ -3,7 +3,7 @@ import { itemsApi, type NewNews } from "../../entity/items";
 import { type FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function EditModel() {
+export function AddModel() {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
