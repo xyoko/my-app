@@ -1,9 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import { CatalogPage } from "./catalog/ui/CatalogPage";
-import { AddModel } from "./edit/model/model";
-// import { ButtonGuard } from "./button_guard";
-import { EditModell } from "./patch/patchPage";
+import { CatalogPage } from "../pages/catalog";
+import { NewsCreatePage } from "../pages/news-create";
+import { NewsEditPage } from "../pages/news-edit";
 
 export const router = createBrowserRouter(
   [
@@ -12,8 +11,8 @@ export const router = createBrowserRouter(
       element: <App />,
       children: [
         { index: true, element: <CatalogPage /> },
-        { path: "post", element: <AddModel /> },
-        { path: "patch", element: <EditModell /> },
+        { path: "post", element: <NewsCreatePage /> },
+        { path: "patch/:id?", element: <NewsEditPage /> },
         { path: "*", element: <CatalogPage /> },
       ],
     },

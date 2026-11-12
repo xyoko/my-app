@@ -1,10 +1,10 @@
-import type { News } from "../../entity/items";
+import type { News } from "../model/types";
 
 type CardProps = {
   item: News;
 };
 
-export function Card({ item }: CardProps) {
+export function NewsCard({ item }: CardProps) {
   return (
     <article className="overflow-hidden rounded-xl border border-white/10 bg-[#12171a] shadow-lg shadow-black/20">
       {item.image_url ? (
@@ -18,8 +18,10 @@ export function Card({ item }: CardProps) {
 
         <h3 className="text-lg font-semibold text-stone-100">{item.title}</h3>
 
-        <p className="text-sm text-stone-300">{item.summary ?? "No summary provided yet."}</p>
-
+        <p className="text-sm text-stone-300">
+          {item.description ?? "No description provided yet."}
+        </p>
+        <p className="text-xs text-stone-500">ID: {item.id}</p>
         {item.content ? <p className="text-sm text-stone-400">{item.content}</p> : null}
       </div>
     </article>

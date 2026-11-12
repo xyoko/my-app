@@ -1,30 +1,42 @@
-﻿import { itemsApi, type News } from "../entity/items";
+﻿import { itemsApi, type News } from "../../../entities/news";
 import { useEffect, useState, type FormEvent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 type RouteState = {
   item?: News;
 };
 
-export function EditModell() {
+export function NewsEditPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const params = useParams();
+  const routeId = params.id ?? "";
   const routedItem = (location.state as RouteState | null)?.item ?? null;
 
-  const [id, setId] = useState(routedItem ? String(routedItem.id) : "");
+  const [id, setId] = useState(routeId || (routedItem ? String(routedItem.id) : ""));
   const [title, setTitle] = useState(routedItem?.title ?? "");
   const [imageUrl, setImageUrl] = useState(routedItem?.image_url ?? "");
   const [summary, setSummary] = useState(routedItem?.summary ?? "");
+  const [description, setDescription] = useState(
+    routedItem?.description ?? routedItem?.content ?? "",
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!routedItem) return;
+    if (routedItem) {
+      setId(String(routedItem.id));
+      setTitle(routedItem.title);
+      setImageUrl(routedItem.image_url ?? "");
+      setSummary(routedItem.summary ?? "");
+      setDescription(routedItem.description ?? routedItem.content ?? "");
+    }
 
-    setId(String(routedItem.id));
-    setTitle(routedItem.title);
-    setImageUrl(routedItem.image_url ?? "");
-    setSummary(routedItem.summary ?? "");
-  }, [routedItem]);
+    if (routeId) {
+      void loadById(routeId);
+    } else if (routedItem) {
+      void loadById(String(routedItem.id));
+    }
+  }, [routeId, routedItem]);
 
   async function loadById(targetId: string) {
     const cleanId = targetId.trim();
@@ -42,6 +54,7 @@ export function EditModell() {
       setTitle(item.title);
       setImageUrl(item.image_url ?? "");
       setSummary(item.summary ?? "");
+      setDescription(item.description ?? item.content ?? "");
     } catch {
       window.alert("News item not found by this ID.");
     } finally {
@@ -66,10 +79,11 @@ export function EditModell() {
       title: title.trim() || undefined,
       summary: summary.trim() || undefined,
       image_url: imageUrl.trim() || undefined,
+      description: description.trim() || undefined,
     };
 
-    if (!payload.title || !payload.summary || !payload.image_url) {
-      window.alert("Title, summary, and image URL are required.");
+    if (!payload.title || !payload.image_url || !payload.description) {
+      window.alert("Title, image URL, and description are required.");
       return;
     }
 
@@ -121,6 +135,14 @@ export function EditModell() {
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             placeholder="Story summary"
+            className="w-full rounded border border-stone-500/70 bg-[#171a1d] p-2 text-stone-100"
+          />
+
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Story description"
             className="w-full rounded border border-stone-500/70 bg-[#171a1d] p-2 text-stone-100"
           />
         </div>

@@ -1,9 +1,9 @@
 
-import { itemsApi, type NewNews } from "../../entity/items";
+import { itemsApi, type NewNews } from "../../../entities/news";
 import { type FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function AddModel() {
+export function NewsCreatePage() {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
@@ -14,7 +14,7 @@ export function AddModel() {
 
     const sample: NewNews = {
       title: name.trim(),
-      summary: description.trim(),
+      description: description.trim(),
       image_url: imageUrl.trim() || undefined,
     };
 
@@ -26,8 +26,8 @@ export function AddModel() {
       window.alert("Please add an image URL.");
       return;
     }
-    if (!sample.summary) {
-      window.alert("Please add a summary.");
+    if (!sample.description) {
+      window.alert("Please add a description.");
       return;
     }
 
@@ -63,7 +63,7 @@ export function AddModel() {
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Story summary"
+            placeholder="Story description"
             className="w-full rounded border border-stone-500/70 bg-[#171a1d] p-2 text-stone-100"
           />
         </div>

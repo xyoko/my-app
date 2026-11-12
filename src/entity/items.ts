@@ -7,9 +7,13 @@ export type News = {
   content?: string;
   image_url?: string;
   author?: string;
+  description?: string;
 };
 
-export type NewNews = Pick<News, "title" | "summary" | "image_url">;
+export type NewNews = Pick<
+  News,
+  "title" | "summary" | "image_url" | "description"
+>;
 
 type NewsListResponse = {
   data: News[];
@@ -22,12 +26,14 @@ type NewsCreatePayload = {
   content: string;
   image_url: string;
   author: string;
+  description?: string;
 };
 
 const defaultSamples = {
   content: "This is a sample news story.",
   image_url: "https://picsum.photos/800/400",
   author: "Admin",
+  description: "A brief description of the news item.",
 };
 
 const api = axios.create({
@@ -62,6 +68,7 @@ export const itemsApi = {
       title: input.title,
       summary: input.summary ?? "No summary provided.",
       image_url: input.image_url ?? defaultSamples.image_url,
+      description: input.description ?? defaultSamples.description,
     };
     try {
       const { data } = await api.post<News>("/api/news", payload);
@@ -78,6 +85,7 @@ export const itemsApi = {
       title: changes.title ?? "Updated news",
       summary: changes.summary ?? "Updated summary",
       content: changes.content ?? defaultSamples.content,
+      description: changes.description ?? defaultSamples.description,
     };
 
     try {
@@ -86,6 +94,7 @@ export const itemsApi = {
         title: updated.title,
         summary: updated.summary,
         content: updated.content ?? defaultSamples.content,
+        description: updated.description,
       };
 
       const { data } = await api.put<News>(`/api/news/${id}`, payload);
@@ -100,10 +109,12 @@ export const itemsApi = {
   async patch(id: string | number, changes: Partial<News>): Promise<News> {
     try {
       const payload: Partial<NewsCreatePayload> = {};
+      const content = changes.content ?? changes.description;
 
       if (changes.title) payload.title = changes.title;
       if (changes.summary) payload.summary = changes.summary;
-      if (changes.content) payload.content = changes.content;
+      if (content) payload.content = content;
+      if (changes.image_url) payload.image_url = changes.image_url;
 
       const { data } = await api.patch<News>(`/api/news/${id}`, payload);
       return data;
@@ -114,10 +125,6 @@ export const itemsApi = {
   },
 
   async remove(id: string | number): Promise<void> {
-    try {
-      await api.delete(`/api/news/${id}`);
-    } catch (error) {
-      window.alert("huy");
-    }
+    await api.delete(`/api/news/${id}`);
   },
 };
